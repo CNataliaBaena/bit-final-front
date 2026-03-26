@@ -1,0 +1,135 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: Arial, sans-serif;
+    background: #fff5f7;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* GRID RESPONSIVE */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+.price {
+    color: #e91e63;
+    font-weight: bold;
+}
+
+/* FORM */
+.form-container {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTONS */
+button {
+    background: #e91e63;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-right: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c2185b;
+}
+
+/* ACTION BUTTONS */
+.actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* TABLET */
+@media (max-width: 768px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}
+
+/* CELULAR */
+@media (max-width: 480px) {
+
+    .container {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    input, textarea {
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

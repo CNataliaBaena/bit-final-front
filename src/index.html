@@ -1,0 +1,63 @@
+<div class="container">
+
+  <header class="header">
+    <h1>🧁 Recetas de Cupcakes</h1>
+  </header>
+
+  <!-- FORM -->
+  <div class="form-container">
+    <form (ngSubmit)="save()" #form="ngForm">
+
+      <label>Nombre</label>
+      <input [(ngModel)]="cupcake.name" name="name" required>
+
+      <label>Descripción</label>
+      <textarea [(ngModel)]="cupcake.description" name="description"></textarea>
+
+      <label>Precio</label>
+      <input type="number" [(ngModel)]="cupcake.price" name="price">
+
+      <label>Ingredientes</label>
+      <textarea [(ngModel)]="cupcake.ingredients" name="ingredients"></textarea>
+
+      <label>Instrucciones</label>
+      <textarea [(ngModel)]="cupcake.instructions" name="instructions"></textarea>
+
+      <div class="form-actions">
+        <button type="submit">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button type="button" (click)="reset()">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- LISTA -->
+  <div class="grid">
+    <div class="card" *ngFor="let cupcake of cupcakes">
+
+      <div class="card-header">
+        <h2>{{ cupcake.name }}</h2>
+        <span class="price">${{ cupcake.price }}</span>
+      </div>
+
+      <p class="description">{{ cupcake.description }}</p>
+
+      <div class="card-body">
+        <p><strong>Ingredientes:</strong> {{ cupcake.ingredients }}</p>
+        <p><strong>Instrucciones:</strong> {{ cupcake.instructions }}</p>
+      </div>
+
+      <div class="actions">
+        <button (click)="edit(cupcake)">Editar</button>
+        <button (click)="delete(cupcake._id!)">Eliminar</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
