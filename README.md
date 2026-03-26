@@ -114,7 +114,7 @@ La aplicación está optimizada para:
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Autor Natalia Baena Cabas
 
 Proyecto desarrollado como práctica Full Stack.
 
