@@ -1,1 +1,5 @@
-<p>products works!</p>
+<ul>
+  @for (product of products; track product._id){
+    <li>{{product.name}}: <span class = "price">{{product.price | currency}}</span> <br> <span class = "description">{{product.description}}</span> <br> <span class = "ingredients">{{product.ingredients}}</span></li>
+  }
+</ul>

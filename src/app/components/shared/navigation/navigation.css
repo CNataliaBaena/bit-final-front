@@ -1,0 +1,30 @@
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  border: solid 2px black;
+  border-top: none;
+  padding-bottom: 10px;
+  background-color: rgb(255, 207, 254);
+  padding-top: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.inicioButton, .productosButton {
+  text-decoration: none;
+  color: rgb(221, 92, 221);
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: solid 2px black;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: rgb(172, 236, 255);
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+.inicioButton:hover, .productosButton:hover {
+  background-color: rgb(221, 92, 221);
+  color: white;
+  border-color: rgb(221, 92, 221);
+}

@@ -1,0 +1,15 @@
+h1 {
+  font-size: 2em;
+  text-align: center;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+header {
+  background-color: rgb(172, 236, 255);
+  border: solid 2px black;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  width: 100%, 100%, 100%, 100%;
+  margin: auto;
+}
