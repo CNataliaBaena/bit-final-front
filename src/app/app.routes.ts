@@ -1,11 +1,23 @@
 import { Routes } from '@angular/router';
-import { Home } from './components/pages/home/home';
-import { Products } from './components/pages/products/products';
-import { PageNotFound } from './components/pages/page-not-found/page-not-found';
+import { TiendaComponent } from './components/pages/tienda/tienda';
+import { RecetasComponent } from './components/pages/recetas/recetas';
 
 export const routes: Routes = [
-  {path: "inicio", component: Home, title: "Inicio"},
-  {path: "productos", component: Products, title: "Productos"},
-  {path: "", redirectTo: "inicio", pathMatch: "full"},
-  {path: "**", component: PageNotFound, title: "Error 404"}
+
+  {
+    path: '',
+    redirectTo: 'tienda',
+    pathMatch: 'full'
+  },
+
+  {
+    path: 'tienda',
+    component: TiendaComponent
+  },
+
+  {
+    path: 'recetas',
+    component: RecetasComponent
+  }
+
 ];

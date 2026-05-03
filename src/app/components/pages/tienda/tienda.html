@@ -1,0 +1,481 @@
+<div
+  class="app-container"
+  [class.dark]="darkMode"
+>
+
+<section class="stats-dashboard">
+
+  <div class="stat-card">
+
+    📦
+
+    <h3>
+      {{ getProductsCount() }}
+    </h3>
+
+    <p>Productos</p>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    🛒
+
+    <h3>
+      {{ getCartCount() }}
+    </h3>
+
+    <p>En carrito</p>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    💰
+
+    <h3>
+      ${{ getCartValue() }}
+    </h3>
+
+    <p>Total</p>
+
+  </div>
+
+</section>
+
+  <!-- ADMIN PRODUCTOS -->
+  <section class="admin-panel">
+
+    <h2>
+      🧁 Administrar Productos
+    </h2>
+
+    <input
+      type="text"
+      placeholder="Nombre"
+      [(ngModel)]="newProduct.name"
+    />
+
+<select
+  [(ngModel)]="newProduct.category"
+>
+
+  <option value="Cupcakes">
+    🧁 Cupcakes
+  </option>
+
+  <option value="Pasteles">
+    🎂 Pasteles
+  </option>
+
+  <option value="Bebidas">
+    ☕ Bebidas
+  </option>
+
+</select>
+
+    <input
+      type="text"
+      placeholder="Descripción"
+      [(ngModel)]="newProduct.description"
+    />
+
+    <input
+      type="number"
+      placeholder="Precio"
+      [(ngModel)]="newProduct.price"
+    />
+
+    <input
+      type="text"
+      placeholder="Ingredientes"
+      [(ngModel)]="newProduct.ingredients"
+    />
+
+    <input
+      type="text"
+      placeholder="Preparación"
+      [(ngModel)]="newProduct.instructions"
+    />
+
+    <input
+      type="text"
+      placeholder="URL imagen"
+      [(ngModel)]="newProduct.image"
+    />
+
+    <button
+      (click)="saveProduct()"
+    >
+      {{
+        editingId
+        ? 'Actualizar Producto'
+        : 'Crear Producto'
+      }}
+    </button>
+
+  </section>
+
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <h2 class="hero-title">
+      Bienvenido a Cat Café 🐱
+    </h2>
+
+    <p class="hero-subtitle">
+      Los cupcakes más deliciosos con recetas para hacer en casa
+    </p>
+
+  </section>
+
+
+  <!-- CARRUSEL -->
+  <section
+    class="carousel-section"
+    *ngIf="products.length > 0"
+  >
+
+    <button
+      class="carousel-nav"
+      (click)="prevSlide()"
+    >
+      ❮
+    </button>
+
+    <div class="carousel-track">
+
+      <div
+        class="carousel-card"
+        *ngFor="let product of visibleProducts"
+      >
+
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+        />
+
+        <h3>
+          {{ product.name }}
+        </h3>
+
+        <p>
+          {{ product.description }}
+        </p>
+
+        <span>
+          ${{ product.price }}
+        </span>
+
+        <button
+          (click)="addToCart(product)"
+        >
+          Comprar
+        </button>
+
+      </div>
+
+    </div>
+
+    <button
+      class="carousel-nav"
+      (click)="nextSlide()"
+    >
+      ❯
+    </button>
+
+  </section>
+
+
+  <!-- SEPARADOR -->
+  <section class="catalog-divider">
+
+    <span>✨</span>
+
+    <h2 class="catalog-title">
+      Nuestro Catálogo
+    </h2>
+
+    <span>🧁</span>
+
+  </section>
+
+<section class="search-section">
+
+  <input
+    type="text"
+
+    placeholder="🔍 Buscar cupcake..."
+
+    [(ngModel)]="searchText"
+  />
+
+</section>
+
+<section class="category-filter">
+
+  <button
+    (click)="selectedCategory = 'Todos'"
+  >
+    Todos
+  </button>
+
+
+  <button
+    (click)="selectedCategory = 'Cupcakes'"
+  >
+    🧁 Cupcakes
+  </button>
+
+
+  <button
+    (click)="selectedCategory = 'Pasteles'"
+  >
+    🎂 Pasteles
+  </button>
+
+
+  <button
+    (click)="selectedCategory = 'Bebidas'"
+  >
+    ☕ Bebidas
+  </button>
+
+</section>
+
+  <!-- PRODUCTOS -->
+  <section class="products-grid">
+
+    <div
+      class="product-card"
+      *ngFor="let product of getFilteredProducts()"
+    >
+
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+      />
+
+      <h4>
+        {{ product.name }}
+      </h4>
+
+      <p>
+        {{ product.description }}
+      </p>
+
+      <span>
+        ${{ product.price }}
+      </span>
+
+
+      <!-- BOTONES CLIENTE -->
+      <div class="buttons">
+
+        <button
+          (click)="addToCart(product)"
+        >
+          Comprar
+        </button>
+
+        <button
+          (click)="openRecipe(product)"
+        >
+          Ver Receta
+        </button>
+
+      </div>
+
+
+      <!-- BOTONES ADMIN -->
+      <div class="admin-buttons">
+
+        <button
+          (click)="editProduct(product)"
+        >
+          ✏️ Editar
+        </button>
+
+        <button
+          (click)="deleteProduct(product._id)"
+        >
+          🗑 Eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- MODAL RECETA -->
+  <div
+    class="modal"
+    *ngIf="selectedRecipe"
+  >
+
+    <div class="modal-content">
+
+      <button
+        class="close"
+        (click)="closeRecipe()"
+      >
+        ✖
+      </button>
+
+      <h2 class="recipe-title">
+        {{ selectedRecipe.name }}
+      </h2>
+
+      <div class="recipe-layout">
+
+        <div class="recipe-image-section">
+
+          <img
+            [src]="selectedRecipe.image"
+            [alt]="selectedRecipe.name"
+            class="recipe-image"
+          />
+
+        </div>
+
+
+        <div class="recipe-content">
+
+          <div class="recipe-box">
+
+            <h3>
+              🥣 Ingredientes
+            </h3>
+
+            <p>
+              {{ selectedRecipe.ingredients }}
+            </p>
+
+          </div>
+
+
+          <div class="recipe-box">
+
+            <h3>
+              👨‍🍳 Preparación
+            </h3>
+
+            <p>
+              {{ selectedRecipe.instructions }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MODAL CARRITO -->
+  <div
+    class="modal"
+    *ngIf="showCart"
+  >
+
+    <div class="modal-content">
+
+      <button
+        class="close"
+        (click)="showCart = false"
+      >
+        ✖
+      </button>
+
+      <h3>
+        Mi Carrito 🛒
+      </h3>
+
+
+      <div
+        *ngIf="cart.length === 0"
+        class="cart-empty"
+      >
+
+        <p>
+          🛒 Tu carrito está vacío
+        </p>
+
+        <p>
+          Agrega algunos cupcakes deliciosos
+        </p>
+
+      </div>
+
+
+      <div
+        *ngFor="let item of cart"
+        class="cart-item"
+      >
+
+        <img
+          [src]="item.image"
+          [alt]="item.name"
+        />
+
+        <div>
+
+          <h4>
+            {{ item.name }}
+          </h4>
+
+          <p>
+            Cantidad:
+            {{ item.quantity }}
+          </p>
+
+          <p>
+            ${{ item.price * item.quantity }}
+          </p>
+
+          <button
+            class="delete-btn"
+            (click)="removeFromCart(item._id)"
+          >
+            🗑 Eliminar
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <h4>
+        Total:
+        ${{ getTotalPrice() }}
+      </h4>
+
+      <button class="checkout">
+        Finalizar Compra
+      </button>
+
+    </div>
+
+  </div>
+
+<div
+  class="toast"
+  *ngIf="showToast"
+>
+
+  {{ toastMessage }}
+
+</div>
+
+  <!-- FOOTER -->
+  <app-footer></app-footer>
+
+</div>

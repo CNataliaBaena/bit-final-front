@@ -1,4 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+html,
 body {
-  background-color: rgb(186, 223, 255);
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  /* mismo fondo real de la tienda */
+  background: linear-gradient(90deg,
+      #ffd6e0 0%,
+      #ffe4cc 16%,
+      #fff4c7 32%,
+      #dcfce7 48%,
+      #dbeafe 64%,
+      #ede9fe 80%,
+      #fce7f3 100%);
+}
+
+app-root {
+  display: block;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: transparent;
+}
+
+/* Dark mode */
+body.dark {
+  background:
+    linear-gradient(rgba(2, 6, 23, 0.88),
+      rgba(2, 6, 23, 0.88)),
+    linear-gradient(90deg,
+      #ffd6e0 0%,
+      #ffe4cc 16%,
+      #fff4c7 32%,
+      #dcfce7 48%,
+      #dbeafe 64%,
+      #ede9fe 80%,
+      #fce7f3 100%);
 }

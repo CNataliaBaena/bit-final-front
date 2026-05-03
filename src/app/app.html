@@ -1,5 +1,10 @@
-<body><app-header></app-header>
-<app-navigation></app-navigation>
-<app-footer></app-footer>
-<router-outlet />
-</body>
+<app-header [darkMode]="darkMode" [cartCount]="cart.length" (fontIncrease)="increaseFontSize()"
+  (darkModeToggle)="toggleDarkMode()">
+</app-header>
+
+<router-outlet></router-outlet>
+
+
+<button *ngIf="true" class="reset-font" (click)="resetFontSize()">
+  Resetear Fuente
+</button>

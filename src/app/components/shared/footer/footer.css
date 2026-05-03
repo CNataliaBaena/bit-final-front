@@ -1,10 +1,49 @@
 .footer {
-  bottom: 0;
-  width: 100%;
-  background-color: rgb(255, 207, 254);
-  border: solid 2px black;
-position: fixed;
-  padding: 5px 0;
+  margin-top: 3rem;
+
+  padding: 2rem 1.5rem;
+
   text-align: center;
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
+
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+
+  background: linear-gradient(135deg,
+      #0f172a,
+      #1e293b);
+
+  color: white;
+
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.footer p {
+  margin: 0.4rem 0;
+}
+
+.footer p:first-child {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.footer p:last-child {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer p:first-child {
+    font-size: 1.05rem;
+  }
+
+  .footer p:last-child {
+    font-size: 0.9rem;
+  }
+
 }

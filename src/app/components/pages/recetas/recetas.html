@@ -1,0 +1,37 @@
+<section class="recipes-page">
+  <div class="page-title">
+    <h2>📖 Recetas Cat Café</h2>
+
+    <p>Secretos de repostería hechos con amor</p>
+  </div>
+
+  <div class="recipes-grid">
+    <div class="recipe-card" *ngFor="let recipe of recipes">
+      <h3>
+        {{ recipe.name }}
+      </h3>
+
+      <p class="description">
+        {{ recipe.description }}
+      </p>
+
+      <p class="price">💲 {{ recipe.price }}</p>
+
+      <div class="recipe-box">
+        <h4>🥣 Ingredientes</h4>
+
+        <p>
+          {{ recipe.ingredients }}
+        </p>
+      </div>
+
+      <div class="recipe-box">
+        <h4>👨‍🍳 Preparación</h4>
+
+        <p>
+          {{ recipe.instructions }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
