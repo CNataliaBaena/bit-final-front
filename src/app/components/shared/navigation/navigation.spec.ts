@@ -1,22 +1,94 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
 
-import { Navigation } from './navigation';
+  ComponentFixture,
 
-describe('Navigation', () => {
-  let component: Navigation;
-  let fixture: ComponentFixture<Navigation>;
+  TestBed
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Navigation],
-    }).compileComponents();
+} from '@angular/core/testing';
 
-    fixture = TestBed.createComponent(Navigation);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+import {
+
+  NavigationComponent
+
+} from './navigation';
+
+
+describe(
+
+  'NavigationComponent',
+
+  () => {
+
+    let component:
+
+      NavigationComponent;
+
+
+    let fixture:
+
+      ComponentFixture<
+
+        NavigationComponent
+
+      >;
+
+
+    beforeEach(
+
+      async () => {
+
+        await TestBed
+          .configureTestingModule({
+
+            imports: [
+
+              NavigationComponent
+
+            ]
+
+          })
+
+          .compileComponents();
+
+
+        fixture =
+
+          TestBed.createComponent(
+
+            NavigationComponent
+
+          );
+
+
+        component =
+
+          fixture.componentInstance;
+
+
+        fixture.detectChanges();
+
+      }
+
+    );
+
+
+    it(
+
+      'should create',
+
+      () => {
+
+        expect(
+
+          component
+
+        ).toBeTruthy();
+
+      }
+
+    );
+
+  }
+
+);

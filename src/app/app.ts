@@ -1,5 +1,7 @@
 import {
-  Component
+  Component,
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -21,6 +23,7 @@ import {
 
 @Component({
   selector: 'app-root',
+
   standalone: true,
 
   imports: [
@@ -33,7 +36,7 @@ import {
 
   styleUrl: './app.css'
 })
-export class App {
+export class App implements AfterViewInit {
 
   darkMode = false;
 
@@ -41,42 +44,105 @@ export class App {
 
   cart: any[] = [];
 
+  cartCount = 0;
+
   showCart = false;
 
 
   constructor(
+
     private cartService:
-      CartService
+      CartService,
+
+    private cdr:
+      ChangeDetectorRef
+
   ) {
 
-    /* ESCUCHAR CAMBIOS DEL CARRITO */
     this.cartService
-      .cartCount$
-      .subscribe(
-        (count: number) => {
+      .cartItems$
+      .subscribe(items => {
 
-          this.cart =
-            new Array(count);
+        this.cart = items;
 
-        }
+
+        this.cartCount =
+
+          items.reduce(
+
+            (
+              total,
+              item
+            ) =>
+
+              total +
+
+              (
+                item.quantity || 0
+              ),
+
+            0
+
+          );
+
+      });
+
+
+    const savedDarkMode =
+
+      localStorage.getItem(
+        'darkMode'
       );
+
+
+    if (savedDarkMode) {
+
+      this.darkMode =
+
+        JSON.parse(
+          savedDarkMode
+        );
+
+
+      if (this.darkMode) {
+
+        document.body
+          .classList
+          .add(
+            'dark'
+          );
+
+      }
+
+    }
 
   }
 
 
-  /* =========================
-    FUENTE GLOBAL
-  ========================= */
+  /* SOLUCIONA NG0100 */
+  ngAfterViewInit() {
+
+    this.cdr.detectChanges();
+
+  }
+
 
   increaseFontSize() {
 
     this.fontSize =
+
       Math.min(
+
         this.fontSize + 2,
+
         24
+
       );
 
-    document.documentElement.style.fontSize =
+
+    document.documentElement
+      .style.fontSize =
+
       `${this.fontSize}px`;
 
   }
@@ -86,45 +152,58 @@ export class App {
 
     this.fontSize = 16;
 
-    document.documentElement.style.fontSize =
+
+    document.documentElement
+      .style.fontSize =
+
       '16px';
 
   }
 
 
-  /* =========================
-    DARK MODE
-  ========================= */
-
   toggleDarkMode() {
 
     this.darkMode =
+
       !this.darkMode;
+
+
+    localStorage.setItem(
+
+      'darkMode',
+
+      JSON.stringify(
+        this.darkMode
+      )
+
+    );
+
 
     if (this.darkMode) {
 
-      document.body.classList.add(
-        'dark'
-      );
+      document.body
+        .classList
+        .add(
+          'dark'
+        );
 
     } else {
 
-      document.body.classList.remove(
-        'dark'
-      );
+      document.body
+        .classList
+        .remove(
+          'dark'
+        );
 
     }
 
   }
 
 
-  /* =========================
-    CARRITO
-  ========================= */
-
   openCart() {
 
     this.showCart =
+
       !this.showCart;
 
   }

@@ -1,120 +1,255 @@
-<div
-  class="app-container"
-  [class.dark]="darkMode"
->
+<div class="app-container" [class.dark]="darkMode">
 
-<section class="stats-dashboard">
+  <!-- DASHBOARD -->
+  <section class="stats-dashboard" *ngIf="isAdmin">
 
-  <div class="stat-card">
+    <div class="stat-card">
 
-    📦
+      💰
 
-    <h3>
-      {{ getProductsCount() }}
-    </h3>
+      <h3>
+        ${{ totalSales }}
+      </h3>
 
-    <p>Productos</p>
+      <p>
+        Ventas
+      </p>
 
-  </div>
-
-
-  <div class="stat-card">
-
-    🛒
-
-    <h3>
-      {{ getCartCount() }}
-    </h3>
-
-    <p>En carrito</p>
-
-  </div>
+    </div>
 
 
-  <div class="stat-card">
+    <div class="stat-card">
 
-    💰
+      📦
 
-    <h3>
-      ${{ getCartValue() }}
-    </h3>
+      <h3>
+        {{ totalOrders }}
+      </h3>
 
-    <p>Total</p>
+      <p>
+        Pedidos
+      </p>
 
-  </div>
+    </div>
 
-</section>
+
+    <div class="stat-card">
+
+      🧁
+
+      <h3>
+        {{ totalProductsSold }}
+      </h3>
+
+      <p>
+        Vendidos
+      </p>
+
+    </div>
+
+  </section>
 
   <!-- ADMIN PRODUCTOS -->
-  <section class="admin-panel">
+  <section class="admin-panel" *ngIf="isAdmin">
 
     <h2>
       🧁 Administrar Productos
     </h2>
 
-    <input
-      type="text"
-      placeholder="Nombre"
-      [(ngModel)]="newProduct.name"
-    />
+    <input type="text" placeholder="Nombre" [(ngModel)]="newProduct.name">
 
-<select
-  [(ngModel)]="newProduct.category"
->
+    <select [(ngModel)]="newProduct.category">
 
-  <option value="Cupcakes">
-    🧁 Cupcakes
-  </option>
+      <option value="Cupcakes">
+        🧁 Cupcakes
+      </option>
 
-  <option value="Pasteles">
-    🎂 Pasteles
-  </option>
+      <option value="Pasteles">
+        🎂 Pasteles
+      </option>
 
-  <option value="Bebidas">
-    ☕ Bebidas
-  </option>
+      <option value="Bebidas">
+        ☕ Bebidas
+      </option>
 
-</select>
+    </select>
 
-    <input
-      type="text"
-      placeholder="Descripción"
-      [(ngModel)]="newProduct.description"
-    />
+    <input type="text" placeholder="Descripción" [(ngModel)]="newProduct.description">
 
-    <input
-      type="number"
-      placeholder="Precio"
-      [(ngModel)]="newProduct.price"
-    />
+    <input type="number" placeholder="Precio" [(ngModel)]="newProduct.price">
 
-    <input
-      type="text"
-      placeholder="Ingredientes"
-      [(ngModel)]="newProduct.ingredients"
-    />
+    <input type="text" placeholder="Ingredientes" [(ngModel)]="newProduct.ingredients">
 
-    <input
-      type="text"
-      placeholder="Preparación"
-      [(ngModel)]="newProduct.instructions"
-    />
+    <input type="text" placeholder="Preparación" [(ngModel)]="newProduct.instructions">
 
-    <input
-      type="text"
-      placeholder="URL imagen"
-      [(ngModel)]="newProduct.image"
-    />
+    <input type="text" placeholder="URL imagen" [(ngModel)]="newProduct.image">
 
-    <button
-      (click)="saveProduct()"
-    >
+    <button (click)="saveProduct()">
+
       {{
-        editingId
-        ? 'Actualizar Producto'
-        : 'Crear Producto'
+
+      editingId
+
+      ? 'Actualizar Producto'
+
+      : 'Crear Producto'
+
       }}
+
     </button>
+
+  </section>
+
+
+  <!-- PEDIDOS -->
+  <section class="orders-section" *ngIf="orders.length > 0">
+
+    <h2>
+
+      {{
+
+      isAdmin
+
+      ? '📦 Todos los Pedidos'
+
+      : '📦 Mis Pedidos'
+
+      }}
+
+    </h2>
+
+    <div class="order-filter" *ngIf="isAdmin">
+
+      <select class="orders-filter-select" [(ngModel)]="selectedOrderStatus">
+
+        <option value="todos">
+          📦 Todos
+        </option>
+
+        <option value="pendiente">
+          🟡 Pendiente
+        </option>
+
+        <option value="preparando">
+          🟠 Preparando
+        </option>
+
+        <option value="entregado">
+          🟢 Entregado
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="orders-grid">
+
+      <div *ngFor="
+    let order of
+    getFilteredOrders()
+  " class="order-card">
+
+        <p>
+
+          <strong>
+            Total:
+          </strong>
+
+          ${{ order.total }}
+
+        </p>
+
+
+        <p>
+
+          <strong>
+            Estado:
+          </strong>
+
+        </p>
+
+
+        <!-- ADMIN -->
+        <select *ngIf="isAdmin" [ngModel]="order.estado" (ngModelChange)="
+
+            changeOrderStatus(
+
+              order._id,
+
+              $event
+
+            )
+
+          ">
+
+          <option value="pendiente">
+            🟡 Pendiente
+          </option>
+
+          <option value="preparando">
+            🟠 Preparando
+          </option>
+
+          <option value="entregado">
+            🟢 Entregado
+          </option>
+
+        </select>
+
+
+        <!-- CLIENTE -->
+        <p *ngIf="!isAdmin">
+
+          {{
+
+          order.estado === 'pendiente'
+
+          ? '🟡 Pendiente'
+
+          : order.estado === 'preparando'
+
+          ? '🟠 Preparando'
+
+          : '🟢 Entregado'
+
+          }}
+
+        </p>
+
+
+        <p>
+
+          <strong>
+            Fecha:
+          </strong>
+
+          {{
+          order.fecha
+          | date:'short'
+          }}
+
+        </p>
+
+
+        <div *ngFor="
+            let product of order.productos
+          ">
+
+          •
+
+          {{ product.name }}
+
+          x
+
+          {{ product.quantity }}
+
+        </div>
+
+        <hr>
+
+      </div>
+
+    </div>
 
   </section>
 
@@ -134,29 +269,20 @@
 
 
   <!-- CARRUSEL -->
-  <section
-    class="carousel-section"
-    *ngIf="products.length > 0"
-  >
+  <section class="carousel-section" *ngIf="products.length > 0">
 
-    <button
-      class="carousel-nav"
-      (click)="prevSlide()"
-    >
+    <button class="carousel-nav" (click)="prevSlide()">
       ❮
     </button>
 
+
     <div class="carousel-track">
 
-      <div
-        class="carousel-card"
-        *ngFor="let product of visibleProducts"
-      >
+      <div class="carousel-card" *ngFor="
+          let product of visibleProducts
+        ">
 
-        <img
-          [src]="product.image"
-          [alt]="product.name"
-        />
+        <img [src]="product.image" [alt]="product.name">
 
         <h3>
           {{ product.name }}
@@ -170,9 +296,7 @@
           ${{ product.price }}
         </span>
 
-        <button
-          (click)="addToCart(product)"
-        >
+        <button (click)="addToCart(product)">
           Comprar
         </button>
 
@@ -180,84 +304,68 @@
 
     </div>
 
-    <button
-      class="carousel-nav"
-      (click)="nextSlide()"
-    >
+
+    <button class="carousel-nav" (click)="nextSlide()">
       ❯
     </button>
 
   </section>
 
 
-  <!-- SEPARADOR -->
+  <!-- CATÁLOGO -->
   <section class="catalog-divider">
 
-    <span>✨</span>
+    <span>
+      ✨
+    </span>
 
     <h2 class="catalog-title">
       Nuestro Catálogo
     </h2>
 
-    <span>🧁</span>
+    <span>
+      🧁
+    </span>
 
   </section>
 
-<section class="search-section">
 
-  <input
-    type="text"
+  <section class="search-section">
 
-    placeholder="🔍 Buscar cupcake..."
+    <input type="text" placeholder="🔍 Buscar cupcake..." [(ngModel)]="searchText">
 
-    [(ngModel)]="searchText"
-  />
-
-</section>
-
-<section class="category-filter">
-
-  <button
-    (click)="selectedCategory = 'Todos'"
-  >
-    Todos
-  </button>
+  </section>
 
 
-  <button
-    (click)="selectedCategory = 'Cupcakes'"
-  >
-    🧁 Cupcakes
-  </button>
+  <section class="category-filter">
 
+    <button (click)="selectedCategory = 'Todos'">
+      Todos
+    </button>
 
-  <button
-    (click)="selectedCategory = 'Pasteles'"
-  >
-    🎂 Pasteles
-  </button>
+    <button (click)="selectedCategory = 'Cupcakes'">
+      🧁 Cupcakes
+    </button>
 
+    <button (click)="selectedCategory = 'Pasteles'">
+      🎂 Pasteles
+    </button>
 
-  <button
-    (click)="selectedCategory = 'Bebidas'"
-  >
-    ☕ Bebidas
-  </button>
+    <button (click)="selectedCategory = 'Bebidas'">
+      ☕ Bebidas
+    </button>
 
-</section>
+  </section>
+
 
   <!-- PRODUCTOS -->
   <section class="products-grid">
 
-    <div
-      class="product-card"
-      *ngFor="let product of getFilteredProducts()"
-    >
+    <div class="product-card" *ngFor="
+        let product of getFilteredProducts()
+      ">
 
-      <img
-        [src]="product.image"
-        [alt]="product.name"
-      />
+      <img [src]="product.image" [alt]="product.name">
 
       <h4>
         {{ product.name }}
@@ -272,36 +380,26 @@
       </span>
 
 
-      <!-- BOTONES CLIENTE -->
       <div class="buttons">
 
-        <button
-          (click)="addToCart(product)"
-        >
+        <button (click)="addToCart(product)">
           Comprar
         </button>
 
-        <button
-          (click)="openRecipe(product)"
-        >
+        <button (click)="openRecipe(product)">
           Ver Receta
         </button>
 
       </div>
 
 
-      <!-- BOTONES ADMIN -->
       <div class="admin-buttons">
 
-        <button
-          (click)="editProduct(product)"
-        >
-          ✏️ Editar
+        <button *ngIf="isAdmin" (click)="editProduct(product)">
+          📝 Editar
         </button>
 
-        <button
-          (click)="deleteProduct(product._id)"
-        >
+        <button *ngIf="isAdmin" (click)="deleteProduct(product._id)">
           🗑 Eliminar
         </button>
 
@@ -313,17 +411,11 @@
 
 
   <!-- MODAL RECETA -->
-  <div
-    class="modal"
-    *ngIf="selectedRecipe"
-  >
+  <div class="modal" *ngIf="selectedRecipe">
 
     <div class="modal-content">
 
-      <button
-        class="close"
-        (click)="closeRecipe()"
-      >
+      <button class="close" (click)="closeRecipe()">
         ✖
       </button>
 
@@ -331,15 +423,12 @@
         {{ selectedRecipe.name }}
       </h2>
 
+
       <div class="recipe-layout">
 
         <div class="recipe-image-section">
 
-          <img
-            [src]="selectedRecipe.image"
-            [alt]="selectedRecipe.name"
-            class="recipe-image"
-          />
+          <img [src]="selectedRecipe.image" [alt]="selectedRecipe.name" class="recipe-image">
 
         </div>
 
@@ -362,7 +451,7 @@
           <div class="recipe-box">
 
             <h3>
-              👨‍🍳 Preparación
+              👩‍🍳 Preparación
             </h3>
 
             <p>
@@ -381,17 +470,11 @@
 
 
   <!-- MODAL CARRITO -->
-  <div
-    class="modal"
-    *ngIf="showCart"
-  >
+  <div class="modal" *ngIf="showCart">
 
     <div class="modal-content">
 
-      <button
-        class="close"
-        (click)="showCart = false"
-      >
+      <button class="close" (click)="showCart = false">
         ✖
       </button>
 
@@ -400,31 +483,11 @@
       </h3>
 
 
-      <div
-        *ngIf="cart.length === 0"
-        class="cart-empty"
-      >
+      <div *ngFor="
+          let item of cart
+        " class="cart-item">
 
-        <p>
-          🛒 Tu carrito está vacío
-        </p>
-
-        <p>
-          Agrega algunos cupcakes deliciosos
-        </p>
-
-      </div>
-
-
-      <div
-        *ngFor="let item of cart"
-        class="cart-item"
-      >
-
-        <img
-          [src]="item.image"
-          [alt]="item.name"
-        />
+        <img [src]="item.image" [alt]="item.name">
 
         <div>
 
@@ -441,10 +504,7 @@
             ${{ item.price * item.quantity }}
           </p>
 
-          <button
-            class="delete-btn"
-            (click)="removeFromCart(item._id)"
-          >
+          <button class="delete-btn" (click)="removeFromCart(item._id)">
             🗑 Eliminar
           </button>
 
@@ -454,26 +514,32 @@
 
 
       <h4>
+
         Total:
+
         ${{ getTotalPrice() }}
+
       </h4>
 
-      <button class="checkout">
+
+      <button class="checkout" (click)="finalizarCompra()">
+
         Finalizar Compra
+
       </button>
 
     </div>
 
   </div>
 
-<div
-  class="toast"
-  *ngIf="showToast"
->
 
-  {{ toastMessage }}
+  <!-- TOAST -->
+  <div class="toast" *ngIf="showToast">
 
-</div>
+    {{ toastMessage }}
+
+  </div>
+
 
   <!-- FOOTER -->
   <app-footer></app-footer>

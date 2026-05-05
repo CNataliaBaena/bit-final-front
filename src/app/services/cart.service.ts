@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable
+} from '@angular/core';
 
 import {
   BehaviorSubject
@@ -10,44 +12,222 @@ import {
 })
 export class CartService {
 
-  /* Abrir/Cerrar */
+  /* =========================
+      VISIBILIDAD DEL CARRITO
+  ========================= */
   private cartVisibleSource =
+
     new BehaviorSubject<boolean>(
       false
     );
 
+
   cartVisible$ =
+
     this.cartVisibleSource
       .asObservable();
 
 
-  /* Cantidad */
-  private cartCountSource =
-    new BehaviorSubject<number>(
-      0
+  /* =========================
+      CARGAR LOCAL STORAGE
+  ========================= */
+  private initialCart =
+
+    JSON.parse(
+
+      localStorage.getItem(
+        'cart'
+      ) || '[]'
+
     );
 
-  cartCount$ =
-    this.cartCountSource
+
+  /* =========================
+      PRODUCTOS DEL CARRITO
+  ========================= */
+  private cartItemsSource =
+
+    new BehaviorSubject<any[]>(
+
+      this.initialCart
+
+    );
+
+
+  cartItems$ =
+
+    this.cartItemsSource
       .asObservable();
 
 
-  toggleCart() {
+  /* =========================
+      GUARDAR CARRITO
+  ========================= */
+  private saveCart() {
 
-    this.cartVisibleSource.next(
-      !this.cartVisibleSource.value
+    localStorage.setItem(
+
+      'cart',
+
+      JSON.stringify(
+
+        this.cartItemsSource
+          .value
+
+      )
+
     );
 
   }
 
 
-  updateCartCount(
-    count: number
+  /* =========================
+      ABRIR / CERRAR
+  ========================= */
+  toggleCart() {
+
+    this.cartVisibleSource.next(
+
+      !this.cartVisibleSource
+        .value
+
+    );
+
+  }
+
+
+  closeCart() {
+
+    this.cartVisibleSource.next(
+      false
+    );
+
+  }
+
+
+  /* =========================
+      AGREGAR PRODUCTO
+  ========================= */
+  addToCart(
+    product: any
   ) {
 
-    this.cartCountSource.next(
-      count
+    const currentCart =
+
+      [
+        ...this.cartItemsSource
+          .value
+      ];
+
+
+    const existingItem =
+
+      currentCart.find(
+
+        item =>
+
+          item._id ===
+
+          product._id
+
+      );
+
+
+    if (existingItem) {
+
+      existingItem.quantity += 1;
+
+    } else {
+
+      currentCart.push({
+
+        ...product,
+
+        quantity: 1
+
+      });
+
+    }
+
+
+    this.cartItemsSource.next(
+      currentCart
     );
+
+
+    this.saveCart();
+
+  }
+
+
+  /* =========================
+      ELIMINAR PRODUCTO
+  ========================= */
+  removeFromCart(
+    productId: string
+  ) {
+
+    const updatedCart =
+
+      this.cartItemsSource
+        .value
+        .filter(
+
+          item =>
+
+            item._id !==
+
+            productId
+
+        );
+
+
+    this.cartItemsSource.next(
+      updatedCart
+    );
+
+
+    this.saveCart();
+
+  }
+
+
+  /* =========================
+      VACIAR
+  ========================= */
+  clearCart() {
+
+    this.cartItemsSource.next(
+      []
+    );
+
+
+    this.saveCart();
+
+  }
+
+
+  /* =========================
+      CANTIDAD
+  ========================= */
+  getCartCount() {
+
+    return this.cartItemsSource
+      .value
+      .reduce(
+
+        (
+          total,
+          item
+        ) =>
+
+          total +
+
+          item.quantity,
+
+        0
+
+      );
 
   }
 

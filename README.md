@@ -1,59 +1,130 @@
-# Spa
+# 🧁 Cat Café Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+Frontend desarrollado con Angular para la plataforma web de **Cat Café**, una aplicación e-commerce enfocada en la venta de cupcakes, pasteles y bebidas con experiencia interactiva para clientes y administradores.
 
-## Development server
+---
 
-To start a local development server, run:
+# 👩‍💻 Desarrolladora
 
-```bash
+**Natalia Baena Cabas**
+
+---
+
+# 🚀 Tecnologías utilizadas
+
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- RxJS
+- Angular Router
+- Angular Forms
+- LocalStorage
+
+---
+
+# ✨ Funcionalidades principales
+
+## 🔐 Sistema de autenticación
+
+- Login de administrador
+- Login de cliente
+- Registro de clientes
+- Persistencia de sesión mediante token JWT
+- Control de roles
+
+---
+Credenciales Admin
+
+Email: admin@catcafe.com
+Contraseña: CatCafe_Admin_2026!
+
+---
+
+## 👤 Cliente
+
+El cliente puede:
+
+- Registrarse
+- Iniciar sesión
+- Ver catálogo de productos
+- Buscar productos
+- Filtrar productos por categorías
+- Ver recetas
+- Añadir productos al carrito
+- Eliminar productos del carrito
+- Finalizar compra
+- Ver sus pedidos
+- Ver estados de pedidos en tiempo real
+
+Estados disponibles:
+
+- 🟡 Pendiente
+- 🟠 Preparando
+- 🟢 Entregado
+
+---
+
+## 👨‍💼 Administrador
+
+El administrador puede:
+
+- Gestionar productos (CRUD completo)
+- Ver todos los pedidos
+- Cambiar estado de pedidos
+- Filtrar pedidos por estado
+- Visualizar dashboard de ventas
+
+Dashboard incluye:
+
+- 💰 Ventas totales
+- 📦 Total de pedidos
+- 🧁 Total de productos vendidos
+
+---
+
+## 🎨 UI/UX
+
+Incluye:
+
+- Dark Mode
+- Responsive Design
+- Animaciones
+- Toast Notifications
+- Carrusel de productos
+- Modal de recetas
+- Modal de carrito
+
+---
+
+# 📂 Instalación
+
+## 1. Clonar repositorio
+
+git clone <repo-url>
+
+## 2. Instalar dependencias
+
+npm install
+
+## 3. Ejecutar proyecto
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 4. Abrir navegador
 
-## Code scaffolding
+http://localhost:4200
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+# 🔑 Variables importantes
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+El frontend se conecta con la API backend:
 
-```bash
-ng generate --help
-```
+http://localhost:4000
 
-## Building
+---
 
-To build the project run:
+# 📌 Estado del proyecto
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+✅ Funcional y listo para demostración académica o portafolio.

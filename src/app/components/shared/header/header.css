@@ -34,7 +34,7 @@
 }
 
 /* =========================
-   DARK MODE
+    DARK MODE
 ========================= */
 
 :host-context(.dark) .header {
@@ -42,7 +42,7 @@
 }
 
 /* =========================
-   LOGO
+    LOGO
 ========================= */
 
 .logo-section {
@@ -68,7 +68,7 @@
 }
 
 /* =========================
-   CONTROLES
+    CONTROLES
 ========================= */
 
 .controls {
@@ -108,15 +108,66 @@
 }
 
 /* =========================
-   BOTÓN CARRITO
+    BOTÓN CARRITO
 ========================= */
 
 .cart-btn {
-  background: linear-gradient(
-    135deg,
-    #f9a8d4,
-    #c084fc
-  ) !important;
+  background: linear-gradient(135deg,
+      #f9a8d4,
+      #c084fc) !important;
 
   color: white !important;
+}
+
+/* =========================
+    RESPONSIVE HEADER
+========================= */
+
+@media (max-width: 1024px) {
+
+  .header {
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    padding: 15px;
+
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .header {
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+  }
+
+
+  .logo-section {
+
+    justify-content: center;
+
+  }
+
+
+  .controls {
+
+    width: 100%;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+  }
+
 }

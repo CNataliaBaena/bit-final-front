@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   DoCheck,
-  ChangeDetectorRef
+  OnDestroy,
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 
 import {
@@ -25,6 +27,11 @@ import {
   FooterComponent
 } from '../../shared/footer/footer';
 
+import {
+  PedidoService
+} from '../../../services/pedido.service';
+
+
 @Component({
   selector: 'app-tienda',
 
@@ -40,9 +47,8 @@ import {
 
   styleUrls: ['./tienda.css']
 })
-
 export class TiendaComponent
-  implements OnInit, DoCheck {
+  implements OnInit, DoCheck, OnDestroy {
 
   products: any[] = [];
 
@@ -67,8 +73,24 @@ export class TiendaComponent
 
   showToast = false;
 
-  editingId: string | null =
-    null;
+  isAdmin = false;
+
+  orders: any[] = [];
+
+  selectedOrderStatus =
+    'todos';
+
+  totalSales = 0;
+
+  totalOrders = 0;
+
+  totalProductsSold = 0;
+
+  editingId: string | null = null;
+
+  totalCart = 0;
+
+  ordersInterval: any;
 
   newProduct = {
 
@@ -88,83 +110,181 @@ export class TiendaComponent
 
   };
 
+
   constructor(
 
-  private tiendaService:
-    TiendaService,
+    private tiendaService:
+      TiendaService,
 
-  private cartService:
-    CartService,
+    private cartService:
+      CartService,
 
-  private cdr:
-    ChangeDetectorRef
+    private cdr:
+      ChangeDetectorRef,
 
-) {}
+    private pedidoService:
+      PedidoService,
+
+    private ngZone:
+      NgZone
+
+  ) { }
 
 
   /* =========================
-     SYNC DARK MODE
+      DARK MODE
   ========================= */
 
   ngDoCheck() {
 
     this.darkMode =
-      document.body.classList.contains(
-        'dark'
-      );
+      document.body
+        .classList
+        .contains(
+          'dark'
+        );
 
-  }
+    this.totalCart =
 
+      this.cart.reduce(
 
-  ngOnInit(): void {
+        (
+          total,
+          item
+        ) =>
 
-    /* CARGAR PRODUCTOS */
-    this.loadProducts();
+          total +
 
+          (
+            item.price *
+            item.quantity
+          ),
 
-    /* ESCUCHAR HEADER */
-    this.cartService
-      .cartVisible$
-      .subscribe(
-        (value: boolean) => {
+        0
 
-          this.showCart =
-            value;
-
-        }
       );
 
   }
 
 
   /* =========================
-     CARRUSEL
+      INIT
+  ========================= */
+
+  ngOnInit(): void {
+
+    this.showCart = false;
+
+    this.isAdmin =
+
+      localStorage.getItem(
+        'role'
+      ) === 'admin';
+
+    this.cartService.closeCart();
+
+    this.loadProducts();
+
+
+    /* PEDIDOS */
+    this.loadOrders();
+
+    this.ordersInterval =
+
+      setInterval(
+
+        () => {
+
+          this.loadOrders();
+
+        },
+
+        5000
+
+      );
+
+    /* ITEMS DEL CARRITO */
+    this.cartService
+      .cartItems$
+      .subscribe(items => {
+
+        this.cart = items;
+
+      });
+
+
+    /* ABRIR / CERRAR CARRITO */
+    this.cartService
+      .cartVisible$
+      .subscribe(value => {
+
+        this.showCart = value;
+
+      });
+
+  }
+
+
+  /* =========================
+      CARRUSEL
   ========================= */
 
   updateVisibleProducts() {
 
-    this.visibleProducts = [];
+    if (
+
+      !this.products ||
+
+      this.products.length === 0
+
+    ) {
+
+      this.visibleProducts = [];
+
+      return;
+
+    }
+
 
     const cardsToShow =
+
       Math.min(
+
         4,
+
         this.products.length
+
       );
 
+
+    this.visibleProducts = [];
+
+
     for (
+
       let i = 0;
+
       i < cardsToShow;
+
       i++
+
     ) {
 
       const index =
+
         (
           this.currentSlide + i
         )
-        % this.products.length;
+
+        %
+
+        this.products.length;
+
 
       this.visibleProducts.push(
+
         this.products[index]
+
       );
 
     }
@@ -175,10 +295,15 @@ export class TiendaComponent
   nextSlide() {
 
     this.currentSlide =
+
       (
         this.currentSlide + 1
       )
-      % this.products.length;
+
+      %
+
+      this.products.length;
+
 
     this.updateVisibleProducts();
 
@@ -188,106 +313,318 @@ export class TiendaComponent
   prevSlide() {
 
     this.currentSlide =
+
       (
-        this.currentSlide - 1
-        + this.products.length
+        this.currentSlide - 1 +
+
+        this.products.length
       )
-      % this.products.length;
+
+      %
+
+      this.products.length;
+
 
     this.updateVisibleProducts();
 
   }
 
 
-  /* =========================
-     CARRITO
-  ========================= */
+  startCarousel() {
 
-  addToCart(
-  product: any
-) {
+    setInterval(() => {
 
-  const existingItem =
-    this.cart.find(
-      item =>
+      if (
 
-        item._id ===
-        product._id
+        this.products.length > 0
 
-    );
+      ) {
 
+        this.nextSlide();
 
-  if (existingItem) {
+        this.cdr.detectChanges();
 
-    existingItem.quantity += 1;
+      }
 
-  } else {
-
-    this.cart.push({
-
-      ...product,
-
-      quantity: 1
-
-    });
+    }, 4000);
 
   }
 
 
-  this.cartService
-    .updateCartCount(
+  /* =========================
+      PEDIDOS
+  ========================= */
 
-      this.cart.length
+  loadOrders() {
 
+    this.pedidoService
+      .getOrders()
+      .subscribe({
+
+        next: (data) => {
+
+          this.orders =
+            data || [];
+
+
+          /* MÉTRICAS */
+          this.totalOrders =
+
+            this.orders.length;
+
+
+          this.totalSales =
+
+            this.orders.reduce(
+
+              (
+                total,
+                order
+              ) =>
+
+                total +
+
+                (
+                  order.total || 0
+                ),
+
+              0
+
+            );
+
+
+          this.totalProductsSold =
+
+            this.orders.reduce(
+
+              (
+                total,
+                order
+              ) =>
+
+                total +
+
+                order.productos.reduce(
+
+                  (
+                    subtotal: number,
+
+                    product: any
+
+                  ) =>
+
+                    subtotal +
+
+                    (
+                      product.quantity || 0
+                    ),
+
+                  0
+
+                ),
+
+              0
+
+            );
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  changeOrderStatus(
+
+    orderId: string,
+
+    estado: string
+
+  ) {
+
+    this.pedidoService
+      .updateOrderStatus(
+
+        orderId,
+
+        estado
+
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.loadOrders();
+
+          this.showToastMessage(
+            '📦 Estado actualizado'
+          );
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  /* =========================
+      CARRITO
+  ========================= */
+
+  addToCart(
+    product: any
+  ) {
+
+    this.cartService
+      .addToCart(
+        product
+      );
+
+    this.showToastMessage(
+      '🛒 Producto agregado'
     );
 
-}
+  }
 
 
   removeFromCart(
-  productId: string
-) {
+    productId: string
+  ) {
 
-  this.cart =
-    this.cart.filter(
-      item =>
-
-        item._id !==
+    this.cartService
+      .removeFromCart(
         productId
+      );
 
-    );
-
-
-  this.cartService
-    .updateCartCount(
-      this.cart.length
-    );
-
-}
+  }
 
 
   getTotalPrice() {
 
     return this.cart
       .reduce(
+
         (
           total,
           item
         ) =>
+
           total +
+
           (
             item.price *
             item.quantity
           ),
+
         0
+
       )
       .toFixed(2);
 
   }
 
 
+  finalizarCompra() {
+
+    if (!this.cart.length) {
+
+      this.showToastMessage(
+        '⚠ El carrito está vacío'
+      );
+
+      return;
+
+    }
+
+
+    const pedido = {
+
+      productos:
+        this.cart,
+
+      total:
+        this.getCartValue()
+
+    };
+
+
+    this.pedidoService
+      .createOrder(
+        pedido
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.showToastMessage(
+            '✅ Pedido realizado'
+          );
+
+
+          this.ngZone.runOutsideAngular(
+            () => {
+
+              setTimeout(() => {
+
+                this.ngZone.run(
+                  () => {
+
+                    this.cartService
+                      .clearCart();
+
+                    this.showCart =
+                      false;
+
+
+                    if (this.isAdmin) {
+
+                      this.loadOrders();
+
+                    }
+
+                  }
+                );
+
+              }, 0);
+
+            }
+          );
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            error
+          );
+
+        }
+
+      });
+
+
+
+  }
+
+
   /* =========================
-     RECETAS
+      RECETAS
   ========================= */
 
   openRecipe(
@@ -307,39 +644,55 @@ export class TiendaComponent
 
   }
 
+
   /* =========================
-     CRUD PRODUCTOS
+      CRUD PRODUCTOS
   ========================= */
 
   loadProducts() {
 
-  this.tiendaService
-    .getProducts()
-    .subscribe(
-      (data) => {
+    this.tiendaService
+      .getProducts()
+      .subscribe({
 
-        this.products =
-          data;
+        next: (data) => {
 
-        this.updateVisibleProducts();
+          this.products = data || [];
 
+          this.updateVisibleProducts();
 
-        /* FORZAR REFRESH UI */
-        this.cdr.detectChanges();
+          this.startCarousel();
 
-      }
-    );
+          this.cdr
+            .detectChanges();
 
-}
+        },
+
+        error: (error) => {
+
+          console.error(
+            error
+          );
+
+        }
+
+      });
+
+  }
 
 
   saveProduct() {
 
     if (
+
       !this.newProduct.name ||
+
       !this.newProduct.description ||
+
       !this.newProduct.price ||
+
       !this.newProduct.image
+
     ) {
 
       this.showToastMessage(
@@ -355,8 +708,11 @@ export class TiendaComponent
 
       this.tiendaService
         .updateProduct(
+
           this.editingId,
+
           this.newProduct
+
         )
         .subscribe({
 
@@ -365,18 +721,6 @@ export class TiendaComponent
             this.resetForm();
 
             this.loadProducts();
-
-            this.showToastMessage(
-              '✏ Producto actualizado'
-            );
-
-          },
-
-          error: (error) => {
-
-            console.error(
-              error
-            );
 
           }
 
@@ -396,18 +740,6 @@ export class TiendaComponent
 
             this.loadProducts();
 
-            this.showToastMessage(
-              '✅ Producto creado'
-            );
-
-          },
-
-          error: (error) => {
-
-            console.error(
-              error
-            );
-
           }
 
         });
@@ -421,15 +753,6 @@ export class TiendaComponent
     id: string
   ) {
 
-    if (
-      !confirm(
-        '¿Eliminar este producto?'
-      )
-    ) {
-      return;
-    }
-
-
     this.tiendaService
       .deleteProduct(id)
       .subscribe({
@@ -438,18 +761,6 @@ export class TiendaComponent
 
           this.loadProducts();
 
-          this.showToastMessage(
-            '🗑 Producto eliminado'
-          );
-
-        },
-
-        error: (error) => {
-
-          console.error(
-            error
-          );
-
         }
 
       });
@@ -457,36 +768,13 @@ export class TiendaComponent
   }
 
 
-  resetForm() {
-
-    this.editingId = null;
-
-    this.newProduct = {
-
-      name: '',
-
-      category: 'Cupcakes',
-
-      description: '',
-
-      price: null,
-
-      ingredients: '',
-
-      instructions: '',
-
-      image: ''
-
-    };
-
-  }
-
   editProduct(
     product: any
   ) {
 
     this.editingId =
       product._id;
+
 
     this.newProduct = {
 
@@ -515,24 +803,59 @@ export class TiendaComponent
 
   }
 
+
+  resetForm() {
+
+    this.editingId =
+      null;
+
+
+    this.newProduct = {
+
+      name: '',
+
+      category:
+        'Cupcakes',
+
+      description: '',
+
+      price: null,
+
+      ingredients: '',
+
+      instructions: '',
+
+      image: ''
+
+    };
+
+  }
+
+
+  /* =========================
+      FILTROS
+  ========================= */
+
   getFilteredProducts() {
 
     let filtered =
       this.products;
 
 
-    /* BUSCADOR */
     if (this.searchText) {
 
       filtered =
         filtered.filter(
+
           product =>
 
             product.name
               .toLowerCase()
               .includes(
+
                 this.searchText
                   .toLowerCase()
+
               )
 
         );
@@ -540,17 +863,20 @@ export class TiendaComponent
     }
 
 
-    /* CATEGORÍAS */
     if (
+
       this.selectedCategory
       !== 'Todos'
+
     ) {
 
       filtered =
         filtered.filter(
+
           product =>
 
             product.category ===
+
             this.selectedCategory
 
         );
@@ -562,6 +888,11 @@ export class TiendaComponent
 
   }
 
+
+  /* =========================
+      DASHBOARD
+  ========================= */
+
   getProductsCount() {
 
     return this.products.length;
@@ -571,7 +902,18 @@ export class TiendaComponent
 
   getCartCount() {
 
-    return this.cart.length;
+    return this.cart.reduce(
+
+      (total, item) =>
+
+        total +
+        (
+          item.quantity || 0
+        ),
+
+      0
+
+    );
 
   }
 
@@ -583,6 +925,7 @@ export class TiendaComponent
       (total, item) =>
 
         total +
+
         (
           item.price *
           item.quantity
@@ -594,11 +937,15 @@ export class TiendaComponent
 
   }
 
+
+  /* =========================
+      TOAST
+  ========================= */
+
   showToastMessage(
     message: string
   ) {
 
-    /* Reiniciar estado */
     this.showToast =
       false;
 
@@ -626,6 +973,42 @@ export class TiendaComponent
       }, 2500);
 
     }, 100);
+
+  }
+
+  ngOnDestroy(): void {
+
+    clearInterval(
+
+      this.ordersInterval
+
+    );
+
+  }
+
+  getFilteredOrders() {
+
+    if (
+
+      this.selectedOrderStatus ===
+      'todos'
+
+    ) {
+
+      return this.orders;
+
+    }
+
+
+    return this.orders.filter(
+
+      order =>
+
+        order.estado ===
+
+        this.selectedOrderStatus
+
+    );
 
   }
 

@@ -1,0 +1,64 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h2>
+
+      {{
+      isRegisterMode
+
+      ? '📝 Registro Cliente'
+
+      : '🔐 Login'
+      }}
+
+    </h2>
+
+
+    <input type="email" placeholder="Correo" [(ngModel)]="email" />
+
+
+    <input type="password" placeholder="Contraseña" [(ngModel)]="password" />
+
+
+    <!-- LOGIN -->
+    <button *ngIf="!isRegisterMode" (click)="login()">
+
+      Iniciar sesión
+
+    </button>
+
+
+    <!-- REGISTER -->
+    <button *ngIf="isRegisterMode" (click)="register()">
+
+      Crear cuenta
+
+    </button>
+
+
+    <!-- CAMBIAR MODO -->
+    <p class="switch-mode" (click)="toggleMode()">
+
+      {{
+
+      isRegisterMode
+
+      ? '¿Ya tienes cuenta? Inicia sesión'
+
+      : '¿No tienes cuenta? Regístrate'
+
+      }}
+
+    </p>
+
+
+    <p *ngIf="errorMessage">
+
+      {{ errorMessage }}
+
+    </p>
+
+  </div>
+
+</div>

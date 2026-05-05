@@ -22,12 +22,12 @@ export class RecetasService {
 
   constructor(
     private http:
-    HttpClient
-  ) {}
+      HttpClient
+  ) { }
 
 
   getRecetas():
-  Observable<any> {
+    Observable<any> {
 
     return this.http.get(
       this.apiUrl

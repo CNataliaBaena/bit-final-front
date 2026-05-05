@@ -1,22 +1,94 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
 
-import { Home } from './tienda';
+  ComponentFixture,
 
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
+  TestBed
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Home],
-    }).compileComponents();
+} from '@angular/core/testing';
 
-    fixture = TestBed.createComponent(Home);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+import {
+
+  TiendaComponent
+
+} from './tienda';
+
+
+describe(
+
+  'TiendaComponent',
+
+  () => {
+
+    let component:
+
+      TiendaComponent;
+
+
+    let fixture:
+
+      ComponentFixture<
+
+        TiendaComponent
+
+      >;
+
+
+    beforeEach(
+
+      async () => {
+
+        await TestBed
+          .configureTestingModule({
+
+            imports: [
+
+              TiendaComponent
+
+            ]
+
+          })
+
+          .compileComponents();
+
+
+        fixture =
+
+          TestBed.createComponent(
+
+            TiendaComponent
+
+          );
+
+
+        component =
+
+          fixture.componentInstance;
+
+
+        fixture.detectChanges();
+
+      }
+
+    );
+
+
+    it(
+
+      'should create',
+
+      () => {
+
+        expect(
+
+          component
+
+        ).toBeTruthy();
+
+      }
+
+    );
+
+  }
+
+);

@@ -13,12 +13,20 @@ import {
   CartService
 } from '../../../services/cart.service';
 
+import {
+  AuthService
+} from '../../../services/auth.service';
+
+import {
+  CommonModule
+} from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
 
   imports: [
+    CommonModule,
     NavigationComponent
   ],
 
@@ -41,14 +49,36 @@ export class HeaderComponent {
 
 
   constructor(
+
     private cartService:
-    CartService
-  ) {}
+      CartService,
+
+    private authService:
+      AuthService
+
+  ) { }
 
 
   openCart() {
 
     this.cartService.toggleCart();
+
+  }
+
+
+  logout() {
+
+    this.authService.logout();
+
+    window.location.reload();
+
+  }
+
+
+  isAdmin() {
+
+    return this.authService
+      .isAdmin();
 
   }
 

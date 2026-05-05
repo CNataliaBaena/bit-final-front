@@ -1,5 +1,5 @@
 /* =========================
-   PAGE
+    PAGE
 ========================= */
 
 .recipes-page {
@@ -7,17 +7,15 @@
 
   padding: 3rem;
 
-  background: linear-gradient(
-    90deg,
-    #fef3c7,
-    #dcfce7,
-    #dbeafe
-  );
+  background: linear-gradient(90deg,
+      #fef3c7,
+      #dcfce7,
+      #dbeafe);
 }
 
 
 /* =========================
-   TITULO
+    TITULO
 ========================= */
 
 .page-title {
@@ -36,12 +34,10 @@
   margin-bottom: 1rem;
 
   text-shadow:
-    0 2px 8px rgba(
+    0 2px 8px rgba(255,
       255,
       255,
-      255,
-      0.6
-    );
+      0.6);
 }
 
 .page-title p {
@@ -54,27 +50,23 @@
 
 
 /* =========================
-   GRID
+    GRID
 ========================= */
 
 .recipes-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(
-        350px,
-        1fr
-      )
-    );
+    repeat(auto-fit,
+      minmax(350px,
+        1fr));
 
   gap: 2rem;
 }
 
 
 /* =========================
-   CARD
+    CARD
 ========================= */
 
 .recipe-card {
@@ -82,20 +74,16 @@
 
   border-radius: 25px;
 
-  background: rgba(
-    255,
-    255,
-    255,
-    0.75
-  );
+  background: rgba(255,
+      255,
+      255,
+      0.75);
 
   box-shadow:
-    0 10px 30px rgba(
+    0 10px 30px rgba(0,
       0,
       0,
-      0,
-      0.08
-    );
+      0.08);
 }
 
 
@@ -131,7 +119,7 @@
 
 
 /* =========================
-   BOXES
+    BOXES
 ========================= */
 
 .recipe-box {

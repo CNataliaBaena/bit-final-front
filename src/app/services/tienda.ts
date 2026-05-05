@@ -22,16 +22,16 @@ export class TiendaService {
 
   constructor(
     private http:
-    HttpClient
-  ) {}
+      HttpClient
+  ) { }
 
 
   /* =========================
-     GET
+      GET
   ========================= */
 
   getProducts():
-  Observable<any> {
+    Observable<any> {
 
     return this.http.get(
       this.apiUrl
@@ -41,7 +41,7 @@ export class TiendaService {
 
 
   /* =========================
-     POST
+      POST
   ========================= */
 
   createProduct(
@@ -57,7 +57,7 @@ export class TiendaService {
 
 
   /* =========================
-     PUT
+      PUT
   ========================= */
 
   updateProduct(
@@ -74,7 +74,7 @@ export class TiendaService {
 
 
   /* =========================
-     DELETE
+      DELETE
   ========================= */
 
   deleteProduct(

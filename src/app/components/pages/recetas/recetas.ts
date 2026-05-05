@@ -28,7 +28,7 @@ import {
   ]
 })
 export class RecetasComponent
-implements OnInit {
+  implements OnInit {
 
   recipes: any[] = [];
 

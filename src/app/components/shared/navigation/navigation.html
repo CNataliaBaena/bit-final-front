@@ -1,11 +1,25 @@
 <nav class="navigation">
 
   <a routerLink="/tienda" routerLinkActive="active-link">
-    🛍️ Tienda
+    🧁 Tienda
   </a>
+
 
   <a routerLink="/recetas" routerLinkActive="active-link">
     📖 Recetas
+  </a>
+
+
+
+  <!-- LOGIN -->
+  <a *ngIf="!loggedIn" routerLink="/login">
+    🔐 Login
+  </a>
+
+
+  <!-- LOGOUT -->
+  <a *ngIf="loggedIn" (click)="logout()">
+    🚪 Logout
   </a>
 
 </nav>
