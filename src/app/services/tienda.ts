@@ -17,7 +17,7 @@ import {
 export class TiendaService {
 
   private apiUrl =
-    'http://localhost:4000/productos';
+    'http://54.174.233.161:4000/productos';
 
 
   constructor(

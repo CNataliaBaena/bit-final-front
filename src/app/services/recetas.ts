@@ -17,7 +17,7 @@ import {
 export class RecetasService {
 
   private apiUrl =
-    'http://localhost:4000/recetas';
+    'http://54.174.233.161:4000/recetas';
 
 
   constructor(

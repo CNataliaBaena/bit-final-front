@@ -17,7 +17,7 @@ import {
 export class AuthService {
 
   private apiUrl =
-    'http://localhost:4000/usuarios';
+    'http://54.174.233.161:4000/usuarios';
 
 
   constructor(

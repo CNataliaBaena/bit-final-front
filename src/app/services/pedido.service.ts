@@ -18,7 +18,7 @@ import {
 export class PedidoService {
 
   private apiUrl =
-    'http://localhost:4000/pedidos';
+    'http://54.174.233.161:4000/pedidos';
 
 
   constructor(
