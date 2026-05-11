@@ -1,9 +1,37 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  DoCheck
+} from '@angular/core';
+
+import { CommonModule } from '@angular/common';
+
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-page-not-found',
-  imports: [],
+
+  standalone: true,
+
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
+
   templateUrl: './page-not-found.html',
-  styleUrl: './page-not-found.css',
+
+  styleUrls: ['./page-not-found.css']
 })
-export class PageNotFound { }
+export class PageNotFoundComponent implements DoCheck {
+
+  darkMode = false;
+
+  ngDoCheck(): void {
+
+    this.darkMode =
+      document.body
+        .classList
+        .contains('dark');
+
+  }
+
+}

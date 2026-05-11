@@ -104,83 +104,52 @@
   <!-- PEDIDOS -->
   <section class="orders-section" *ngIf="orders.length > 0">
 
-    <h2>
+    <!-- HEADER DESPLEGABLE -->
+    <div class="orders-header" (click)="showOrders = !showOrders">
 
-      {{
+      <h2>
 
-      isAdmin
+        {{
 
-      ? '📦 Todos los Pedidos'
+        isAdmin
 
-      : '📦 Mis Pedidos'
+        ? '📦 Todos los Pedidos'
 
-      }}
+        : '📦 Mis Pedidos'
 
-    </h2>
+        }}
 
-    <div class="order-filter" *ngIf="isAdmin">
+      </h2>
 
-      <select class="orders-filter-select" [(ngModel)]="selectedOrderStatus">
 
-        <option value="todos">
-          📦 Todos
-        </option>
+      <span>
 
-        <option value="pendiente">
-          🟡 Pendiente
-        </option>
+        {{
 
-        <option value="preparando">
-          🟠 Preparando
-        </option>
+        showOrders
 
-        <option value="entregado">
-          🟢 Entregado
-        </option>
+        ? '▲'
 
-      </select>
+        : '▼'
+
+        }}
+
+      </span>
 
     </div>
 
-    <div class="orders-grid">
 
-      <div *ngFor="
-    let order of
-    getFilteredOrders()
-  " class="order-card">
+    <!-- CONTENIDO -->
+    <div *ngIf="showOrders">
 
-        <p>
+      <!-- FILTRO SOLO ADMIN -->
+      <div class="order-filter" *ngIf="isAdmin">
 
-          <strong>
-            Total:
-          </strong>
+        <select class="orders-filter-select" [(ngModel)]="selectedOrderStatus">
 
-          ${{ order.total }}
-
-        </p>
-
-
-        <p>
-
-          <strong>
-            Estado:
-          </strong>
-
-        </p>
-
-
-        <!-- ADMIN -->
-        <select *ngIf="isAdmin" [ngModel]="order.estado" (ngModelChange)="
-
-            changeOrderStatus(
-
-              order._id,
-
-              $event
-
-            )
-
-          ">
+          <option value="todos">
+            📦 Todos
+          </option>
 
           <option value="pendiente">
             🟡 Pendiente
@@ -196,64 +165,139 @@
 
         </select>
 
-
-        <!-- CLIENTE -->
-        <p *ngIf="!isAdmin">
-
-          {{
-
-          order.estado === 'pendiente'
-
-          ? '🟡 Pendiente'
-
-          : order.estado === 'preparando'
-
-          ? '🟠 Preparando'
-
-          : '🟢 Entregado'
-
-          }}
-
-        </p>
+      </div>
 
 
-        <p>
+      <!-- CARDS -->
+      <div class="orders-grid">
 
-          <strong>
-            Fecha:
-          </strong>
+        <div class="order-card" *ngFor="
+          let order of
+          getFilteredOrders()
+        ">
 
-          {{
-          order.fecha
-          | date:'short'
-          }}
+          <p>
 
-        </p>
+            <strong>
+              Total:
+            </strong>
+
+            ${{ order.total }}
+
+          </p>
 
 
-        <div *ngFor="
-            let product of order.productos
+          <p>
+
+            <strong>
+              Estado:
+            </strong>
+
+          </p>
+
+
+          <!-- ADMIN -->
+          <select *ngIf="isAdmin" [ngModel]="
+            order.estado
+          " (ngModelChange)="
+
+            changeOrderStatus(
+
+              order._id,
+
+              $event
+
+            )
+
           ">
 
-          •
+            <option value="pendiente">
+              🟡 Pendiente
+            </option>
 
-          {{ product.name }}
+            <option value="preparando">
+              🟠 Preparando
+            </option>
 
-          x
+            <option value="entregado">
+              🟢 Entregado
+            </option>
 
-          {{ product.quantity }}
+          </select>
+
+
+          <!-- CLIENTE -->
+          <p *ngIf="!isAdmin">
+
+            {{
+
+            order.estado ===
+            'pendiente'
+
+            ? '🟡 Pendiente'
+
+            : order.estado ===
+            'preparando'
+
+            ? '🟠 Preparando'
+
+            : '🟢 Entregado'
+
+            }}
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Fecha:
+            </strong>
+
+            {{
+            order.fecha
+            | date:'short'
+            }}
+
+          </p>
+
+
+          <div *ngFor="
+            let product of
+            order.productos
+          ">
+
+            •
+
+            {{ product.name }}
+
+            x
+
+            {{ product.quantity }}
+
+          </div>
+
+          <hr>
+
+          <hr>
+
+          <button *ngIf="isAdmin" class="delete-order-btn" (click)="
+    deleteOrder(
+      order._id
+    )
+  ">
+
+            🗑 Eliminar Pedido
+
+          </button>
 
         </div>
-
-        <hr>
 
       </div>
 
     </div>
 
   </section>
-
-
   <!-- HERO -->
   <section class="hero">
 
@@ -386,10 +430,6 @@
           Comprar
         </button>
 
-        <button (click)="openRecipe(product)">
-          Ver Receta
-        </button>
-
       </div>
 
 
@@ -408,66 +448,6 @@
     </div>
 
   </section>
-
-
-  <!-- MODAL RECETA -->
-  <div class="modal" *ngIf="selectedRecipe">
-
-    <div class="modal-content">
-
-      <button class="close" (click)="closeRecipe()">
-        ✖
-      </button>
-
-      <h2 class="recipe-title">
-        {{ selectedRecipe.name }}
-      </h2>
-
-
-      <div class="recipe-layout">
-
-        <div class="recipe-image-section">
-
-          <img [src]="selectedRecipe.image" [alt]="selectedRecipe.name" class="recipe-image">
-
-        </div>
-
-
-        <div class="recipe-content">
-
-          <div class="recipe-box">
-
-            <h3>
-              🥣 Ingredientes
-            </h3>
-
-            <p>
-              {{ selectedRecipe.ingredients }}
-            </p>
-
-          </div>
-
-
-          <div class="recipe-box">
-
-            <h3>
-              👩‍🍳 Preparación
-            </h3>
-
-            <p>
-              {{ selectedRecipe.instructions }}
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
 
   <!-- MODAL CARRITO -->
   <div class="modal" *ngIf="showCart">

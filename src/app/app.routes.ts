@@ -19,42 +19,59 @@ import {
 } from './guards/auth.guard';
 
 
-export const routes: Routes = [
+export const routes:
+  Routes = [
 
-  {
-    path: '',
+    {
+      path: '',
 
-    redirectTo: 'tienda',
+      redirectTo:
+        'tienda',
 
-    pathMatch: 'full'
-  },
-
-
-  {
-    path: 'tienda',
-
-    component:
-      TiendaComponent,
-
-    canActivate: [
-      authGuard
-    ]
-  },
+      pathMatch:
+        'full'
+    },
 
 
-  {
-    path: 'recetas',
+    {
+      path: 'tienda',
 
-    component:
-      RecetasComponent
-  },
+      component:
+        TiendaComponent,
+
+      canActivate: [
+        authGuard
+      ]
+
+    },
 
 
-  {
-    path: 'login',
+    {
+      path: 'recetas',
 
-    component:
-      LoginComponent
-  }
+      component:
+        RecetasComponent,
 
-];
+      canActivate: [
+        authGuard
+      ]
+
+    },
+
+
+    {
+      path: 'login',
+
+      component:
+        LoginComponent
+
+    },
+
+    {
+      path: '**',
+      loadComponent: () =>
+        import('./components/pages/page-not-found/page-not-found')
+          .then(m => m.PageNotFoundComponent)
+    }
+
+  ];

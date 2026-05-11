@@ -41,11 +41,9 @@ export class PedidoService {
     return {
 
       headers:
-
         new HttpHeaders({
 
           Authorization:
-
             `Bearer ${token}`
 
         })
@@ -55,9 +53,19 @@ export class PedidoService {
   }
 
 
-  /* =========================
-      CREAR PEDIDO
-  ========================= */
+  getOrders(): Observable<any> {
+
+    return this.http.get(
+
+      this.apiUrl,
+
+      this.getHeaders()
+
+    );
+
+  }
+
+
   createOrder(
     pedido: any
   ): Observable<any> {
@@ -75,15 +83,19 @@ export class PedidoService {
   }
 
 
-  /* =========================
-      OBTENER PEDIDOS
-  ========================= */
-  getOrders():
-    Observable<any> {
+  updateOrderStatus(
 
-    return this.http.get(
+    id: string,
 
-      this.apiUrl,
+    estado: string
+
+  ): Observable<any> {
+
+    return this.http.put(
+
+      `${this.apiUrl}/${id}`,
+
+      { estado },
 
       this.getHeaders()
 
@@ -92,24 +104,13 @@ export class PedidoService {
   }
 
 
-  /* =========================
-      ACTUALIZAR ESTADO
-  ========================= */
-  updateOrderStatus(
-
-    orderId: string,
-
-    estado: string
-
+  deleteOrder(
+    id: string
   ): Observable<any> {
 
-    return this.http.put(
+    return this.http.delete(
 
-      `${this.apiUrl}/${orderId}`,
-
-      {
-        estado
-      },
+      `${this.apiUrl}/${id}`,
 
       this.getHeaders()
 

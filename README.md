@@ -1,25 +1,26 @@
-# 🧁 Cat Café Frontend
+# 🐱🧁 Cat Café Frontend
 
-Frontend desarrollado con Angular para la plataforma web de **Cat Café**, una aplicación e-commerce enfocada en la venta de cupcakes, pasteles y bebidas con experiencia interactiva para clientes y administradores.
+Frontend oficial de **Cat Café**, una plataforma e-commerce interactiva para la venta de cupcakes, pasteles y bebidas, desarrollada con Angular.
 
 ---
 
-# 👩‍💻 Desarrolladora
+# 👩‍💻 Desarrollado por
 
-**Natalia Baena Cabas**
+## Natalia Baena Cabas ✨
 
 ---
 
 # 🚀 Tecnologías utilizadas
 
-- Angular
-- TypeScript
-- HTML5
-- CSS3
-- RxJS
-- Angular Router
-- Angular Forms
-- LocalStorage
+| Tecnología | Uso |
+|------------|------|
+| ⚡ Angular | Framework principal |
+| 📘 TypeScript | Lógica del sistema |
+| 🎨 CSS3 | Diseño visual |
+| 🌐 HTML5 | Estructura |
+| 🔄 RxJS | Programación reactiva |
+| 🔐 JWT | Seguridad |
+| 📡 HttpClient | Consumo de API |
 
 ---
 
@@ -27,104 +28,158 @@ Frontend desarrollado con Angular para la plataforma web de **Cat Café**, una a
 
 ## 🔐 Sistema de autenticación
 
-- Login de administrador
-- Login de cliente
-- Registro de clientes
-- Persistencia de sesión mediante token JWT
-- Control de roles
-
----
-Credenciales Admin
-
-Email: admin@catcafe.com
-Contraseña: CatCafe_Admin_2026!
+✅ Login seguro con JWT  
+✅ Persistencia de sesión  
+✅ Logout  
+✅ Protección de rutas con Guards  
+✅ Validación por roles  
 
 ---
 
-## 👤 Cliente
+# 👥 Roles del sistema
 
-El cliente puede:
+## 🛍️ Cliente
 
-- Registrarse
-- Iniciar sesión
-- Ver catálogo de productos
-- Buscar productos
-- Filtrar productos por categorías
-- Ver recetas
-- Añadir productos al carrito
-- Eliminar productos del carrito
-- Finalizar compra
-- Ver sus pedidos
-- Ver estados de pedidos en tiempo real
+Puede:
 
-Estados disponibles:
-
-- 🟡 Pendiente
-- 🟠 Preparando
-- 🟢 Entregado
+✅ Iniciar sesión  
+✅ Explorar productos  
+✅ Buscar productos 🔍  
+✅ Filtrar por categorías 🗂️  
+✅ Agregar productos al carrito 🛒  
+✅ Eliminar productos del carrito ❌  
+✅ Realizar compras 💳  
+✅ Ver historial de pedidos 📦  
 
 ---
 
-## 👨‍💼 Administrador
+## 👑 Administrador
 
-El administrador puede:
+Además de lo anterior puede:
 
-- Gestionar productos (CRUD completo)
-- Ver todos los pedidos
-- Cambiar estado de pedidos
-- Filtrar pedidos por estado
-- Visualizar dashboard de ventas
-
-Dashboard incluye:
-
-- 💰 Ventas totales
-- 📦 Total de pedidos
-- 🧁 Total de productos vendidos
+✅ Crear productos ➕  
+✅ Editar productos ✏️  
+✅ Eliminar productos 🗑️  
+✅ Gestionar pedidos 📦  
+✅ Cambiar estados de pedidos 🔄  
+✅ Eliminar pedidos ❌  
+✅ Ver dashboard de métricas 📊  
 
 ---
 
-## 🎨 UI/UX
+# 🧁 Módulos implementados
+
+## 🏪 Tienda interactiva
 
 Incluye:
 
-- Dark Mode
-- Responsive Design
-- Animaciones
-- Toast Notifications
-- Carrusel de productos
-- Modal de recetas
-- Modal de carrito
+✨ Carrusel automático de productos  
+✨ Cards animadas  
+✨ Buscador en tiempo real  
+✨ Filtros por categoría  
+✨ Responsive design  
 
 ---
 
-# 📂 Instalación
+## 🛒 Carrito inteligente
 
-## 1. Clonar repositorio
+Funciones:
 
-git clone <repo-url>
+➕ Agregar productos  
+➖ Eliminar productos  
+💰 Calcular total automáticamente  
+✅ Finalizar compra  
 
-## 2. Instalar dependencias
+---
 
+## 📦 Gestión de pedidos
+
+Estados disponibles:
+
+🟡 Pendiente  
+🟠 Preparando  
+🟢 Entregado  
+
+---
+
+## 📊 Dashboard administrativo
+
+Métricas disponibles:
+
+💰 Ventas totales  
+📦 Total pedidos  
+🧁 Productos vendidos  
+
+---
+
+## 🎨 UI / UX
+
+Incluye:
+
+🌙 Dark Mode  
+🔔 Toast Notifications  
+✨ Microanimaciones  
+📱 Responsive Design  
+🚫 Página 404 personalizada  
+
+---
+
+# 🔑 Credenciales Admin
+
+## 👑 Administrador
+
+📧 Email:
+
+admin@catcafe.com
+
+🔒 Password:
+
+CatCafe_Admin_2026!
+
+---
+
+# ⚙️ Instalación
+
+## 📥 Clonar proyecto
+
+```bash
+git clone <repositorio>
+```
+
+## 📦 Instalar dependencias
+
+```bash id="g6xx6v"
 npm install
+```
 
-## 3. Ejecutar proyecto
+## ▶️ Ejecutar proyecto
 
+```bash id="x7kcfm"
 ng serve
+```
 
-## 4. Abrir navegador
+---
 
+# 🌍 URL local
+
+```bash id="qjjp5r"
 http://localhost:4200
+```
 
 ---
 
-# 🔑 Variables importantes
+# 📁 Arquitectura
 
-El frontend se conecta con la API backend:
+src/app/
 
-http://localhost:4000
+┣ 📂 components  
+┣ 📂 pages  
+┣ 📂 services  
+┣ 📂 guards  
+┣ 📂 models  
 
 ---
 
-# 📌 Estado del proyecto
+# ✅ Estado del proyecto
 
-✅ Funcional y listo para demostración académica o portafolio.
+🟢 Proyecto completamente funcional

@@ -1,41 +1,99 @@
-<section class="recipes-page">
-  <div class="page-title">
-    <h2>📖 Recetas Cat Café</h2>
+<div class="recipes-page">
 
-    <p>Secretos de repostería hechos con amor</p>
+  <h1>
+    📖 Recetario Cat Café
+  </h1>
 
-    <h3>¡Próximamente! 🍰</h3>
+  <!-- BUSCADOR -->
+  <section class="search-section">
 
-    <p>Proyecto en construcción...</p>
-  </div>
+    <input type="text" placeholder="🔍 Buscar receta..." [(ngModel)]="searchText">
 
-  <div class="recipes-grid">
-    <div class="recipe-card" *ngFor="let recipe of recipes">
-      <h3>
-        {{ recipe.name }}
-      </h3>
+  </section>
 
-      <p class="description">
-        {{ recipe.description }}
-      </p>
 
-      <p class="price">💲 {{ recipe.price }}</p>
+  <!-- FILTROS -->
+  <section class="category-filter">
 
-      <div class="recipe-box">
-        <h4>🥣 Ingredientes</h4>
+    <button (click)="selectedCategory = 'Todos'">
+      Todos
+    </button>
 
-        <p>
-          {{ recipe.ingredients }}
-        </p>
+    <button (click)="selectedCategory = 'Cupcakes'">
+      🧁 Cupcakes
+    </button>
+
+    <button (click)="selectedCategory = 'Pasteles'">
+      🎂 Pasteles
+    </button>
+
+    <button (click)="selectedCategory = 'Bebidas'">
+      ☕ Bebidas
+    </button>
+
+  </section>
+
+  <div class="recipes-container">
+
+    <div class="recipe-card" *ngFor="
+  let recipe of
+  getFilteredRecipes()
+">
+
+      <!-- IMAGEN -->
+      <div class="recipe-image">
+
+        <img [src]="recipe.image" [alt]="recipe.name">
+
       </div>
 
-      <div class="recipe-box">
-        <h4>👨‍🍳 Preparación</h4>
 
-        <p>
-          {{ recipe.instructions }}
+      <!-- INFO -->
+      <div class="recipe-info">
+
+        <h2>
+          {{ recipe.name }}
+        </h2>
+
+
+        <p class="recipe-description">
+
+          {{ recipe.description }}
+
         </p>
+
+
+        <!-- INGREDIENTES -->
+        <div class="recipe-section">
+
+          <h3>
+            🥣 Ingredientes
+          </h3>
+
+          <p>
+            {{ recipe.ingredients }}
+          </p>
+
+        </div>
+
+
+        <!-- PREPARACION -->
+        <div class="recipe-section">
+
+          <h3>
+            👩‍🍳 Preparación
+          </h3>
+
+          <p>
+            {{ recipe.instructions }}
+          </p>
+
+        </div>
+
       </div>
+
     </div>
+
   </div>
-</section>
+
+</div>

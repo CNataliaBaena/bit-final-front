@@ -60,7 +60,7 @@ export class TiendaComponent
 
   showCart = false;
 
-  selectedRecipe: any = null;
+  showOrders = false;
 
   currentSlide = 0;
 
@@ -540,17 +540,11 @@ export class TiendaComponent
   }
 
 
-  finalizarCompra() {
+  finalizarCompra(): void {
 
-    if (!this.cart.length) {
-
-      this.showToastMessage(
-        '⚠ El carrito está vacío'
-      );
-
-      return;
-
-    }
+    if (
+      this.cart.length === 0
+    ) return;
 
 
     const pedido = {
@@ -559,7 +553,9 @@ export class TiendaComponent
         this.cart,
 
       total:
-        this.getCartValue()
+        Number(
+          this.getTotalPrice()
+        )
 
     };
 
@@ -572,99 +568,21 @@ export class TiendaComponent
 
         next: () => {
 
+          this.cart = [];
+
+          this.cartService
+            .clearCart();
+
+          this.showCart =
+            false;
+
+
           this.showToastMessage(
-            '✅ Pedido realizado'
+            '✅ Tu compra fue completada con éxito'
           );
 
 
-          this.ngZone.runOutsideAngular(
-            () => {
-
-              setTimeout(() => {
-
-                this.ngZone.run(
-                  () => {
-
-                    this.cartService
-                      .clearCart();
-
-                    this.showCart =
-                      false;
-
-
-                    if (this.isAdmin) {
-
-                      this.loadOrders();
-
-                    }
-
-                  }
-                );
-
-              }, 0);
-
-            }
-          );
-
-        },
-
-        error: (error: any) => {
-
-          console.error(
-            error
-          );
-
-        }
-
-      });
-
-
-
-  }
-
-
-  /* =========================
-      RECETAS
-  ========================= */
-
-  openRecipe(
-    product: any
-  ) {
-
-    this.selectedRecipe =
-      product;
-
-  }
-
-
-  closeRecipe() {
-
-    this.selectedRecipe =
-      null;
-
-  }
-
-
-  /* =========================
-      CRUD PRODUCTOS
-  ========================= */
-
-  loadProducts() {
-
-    this.tiendaService
-      .getProducts()
-      .subscribe({
-
-        next: (data) => {
-
-          this.products = data || [];
-
-          this.updateVisibleProducts();
-
-          this.startCarousel();
-
-          this.cdr
-            .detectChanges();
+          this.loadOrders();
 
         },
 
@@ -679,8 +597,56 @@ export class TiendaComponent
       });
 
   }
+  /* =========================
+      CRUD PRODUCTOS
+  ========================= */
+
+  loadProducts(): void {
+
+    this.tiendaService
+      .getProducts()
+      .subscribe({
+
+        next: (data) => {
+
+          console.log(
+            'PRODUCTOS:',
+            data
+          );
+
+          this.products =
+            data || [];
 
 
+          this.updateVisibleProducts();
+
+
+          /* iniciar solo cuando ya existan productos */
+          if (
+            this.products.length > 0
+          ) {
+
+            this.startCarousel();
+
+          }
+
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'ERROR PRODUCTOS:',
+            error
+          );
+
+        }
+
+      });
+
+  }
   saveProduct() {
 
     if (
@@ -1009,6 +975,39 @@ export class TiendaComponent
         this.selectedOrderStatus
 
     );
+
+  }
+
+  deleteOrder(
+    orderId: string
+  ): void {
+
+    this.pedidoService
+      .deleteOrder(
+        orderId
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.loadOrders();
+
+          this.showToastMessage(
+            '🗑 Pedido eliminado'
+          );
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'ERROR ELIMINANDO:',
+            error
+          );
+
+        }
+
+      });
 
   }
 
